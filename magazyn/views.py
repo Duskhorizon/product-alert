@@ -31,16 +31,17 @@ def edycja_produktow(request):
             for produkt in produkty:                
                 if produkt.ilosc < produkt.minimum:
                     brakujace.append(produkt.nazwa)
-            context = ssl.create_default_context()                    
-            port = 465
-            password = 'siusiak666'
-            sender_email = '001010blipblop010101@gmail.com'
-            receiver_email = 'tolep@tolep.pl'
-            message = ' '.join(brakujace)
-            with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-                server.login(sender_email, password)
-                server.sendmail(sender_email, receiver_email, message)
-      
+            if len(brakujace) > 0:        
+                context = ssl.create_default_context()                    
+                port = 465
+                password = 'siusiak666'
+                sender_email = '001010blipblop010101@gmail.com'
+                receiver_email = '001010blipblop010101@gmail.com'
+                message = ' '.join(brakujace)
+                with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+                    server.login(sender_email, password)
+                    server.sendmail(sender_email, receiver_email, message)
+        
     else:
         formset = ProduktFormSet()
     return render(request, 'edycjaproduktow.html', {'formset': formset}) 
@@ -56,15 +57,16 @@ def edycja_surowcow(request):
             for surowiec in surowce:                
                 if surowiec.ilosc < surowiec.minimum:
                     brakujace.append(surowiec.nazwa)
-            context = ssl.create_default_context()                    
-            port = 465
-            password = 'siusiak666'
-            sender_email = '001010blipblop010101@gmail.com'
-            receiver_email = 'tolep@tolep.pl'
-            message = ' '.join(brakujace)
-            with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-                server.login(sender_email, password)
-                server.sendmail(sender_email, receiver_email, message)
+            if len(brakujace) > 0:        
+                context = ssl.create_default_context()                    
+                port = 465
+                password = 'siusiak666'
+                sender_email = '001010blipblop010101@gmail.com'
+                receiver_email = '001010blipblop010101@gmail.com'
+                message = ' '.join(brakujace)
+                with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+                    server.login(sender_email, password)
+                    server.sendmail(sender_email, receiver_email, message)
             
     else:
         formset = SurowiecFormSet()
