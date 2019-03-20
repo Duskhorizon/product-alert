@@ -36,7 +36,7 @@ def edycja_produktow(request):
                 port = 465
                 password = 'siusiak666'
                 sender_email = '001010blipblop010101@gmail.com'
-                receiver_email = '001010blipblop010101@gmail.com'
+                receiver_email = 'tolep@tolep.pl'
                 message = ' '.join(brakujace)
                 with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
                     server.login(sender_email, password)
@@ -62,7 +62,7 @@ def edycja_surowcow(request):
                 port = 465
                 password = 'siusiak666'
                 sender_email = '001010blipblop010101@gmail.com'
-                receiver_email = '001010blipblop010101@gmail.com'
+                receiver_email = 'tolep@tolep.pl'
                 message = ' '.join(brakujace)
                 with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
                     server.login(sender_email, password)
