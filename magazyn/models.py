@@ -7,6 +7,6 @@ class Produkt(models.Model):
 
 class Surowiec(models.Model):
     nazwa = models.CharField(max_length=200)
-    ilosc = models.DecimalField(decimal_places=2,max_digits=6)
-    minimum = models.DecimalField(decimal_places=2,max_digits=6)
+    ilosc = models.FloatField()
+    minimum = models.FloatField()
 
