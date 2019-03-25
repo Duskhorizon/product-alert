@@ -64,7 +64,7 @@
 <form method="POST" action="{% url 'edycjas' %}">
     {{formset.management_form }}
     {% csrf_token %}
-    <input class="btn btn-primary" type ="submit" value="Zatwierdź" />
+
 
 
   
@@ -80,6 +80,7 @@
   </div>
 
 {% endfor %}
+    <input class="btn btn-primary" type ="submit" value="Zatwierdź" />
 </form>
 
 

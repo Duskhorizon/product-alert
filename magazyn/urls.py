@@ -6,5 +6,5 @@ urlpatterns = [
     path('edycja/', views.edycja,name='edycja'),
     path('edycjap/', views.edycja_produktow,name='edycjap'),
     path('edycjas/', views.edycja_surowcow,name='edycjas'),
-    path('alert/',views.alert, name='alert'),
+    path('test/',views.emaile, name='edycjam'),
 ]

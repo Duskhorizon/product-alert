@@ -10,3 +10,12 @@ class Surowiec(models.Model):
     ilosc = models.FloatField()
     minimum = models.FloatField()
 
+class Email(models.Model):
+    name = models.CharField(max_length=200)
+    class Meta:
+        db_table = 'email'
+
+    def __str__(self):
+        return self.name
+
+

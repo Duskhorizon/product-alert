@@ -54,6 +54,7 @@
 
   <h1>Edycja Stanów Magazynowych</h1>
 
+
 <form method="GET" action="{% url 'magazyn' %}">
     {% csrf_token %}
     <input class="btn btn-primary" type ="submit" value="Magazyn" />
@@ -64,7 +65,7 @@
 <form method="POST" action="{% url 'edycjap' %}">
     {{formset.management_form }}
     {% csrf_token %}
-    <input class="btn btn-primary" type ="submit" value="Zatwierdź" />
+
 
 
   
@@ -80,6 +81,7 @@
   </div>
 
 {% endfor %}
+<input class="btn btn-primary" type ="submit" value="Zatwierdź" />
 </form>
 
 

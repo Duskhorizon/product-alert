@@ -53,6 +53,7 @@
     <div class="container">
 
   <h1>Edycja Stanów Magazynowych</h1>
+  {{ user.username }}
 <form method="POST" action="{% url 'edycja' %}">
     {% csrf_token %}
     <input class="btn btn-primary" type ="submit" value="Zatwierdź" />
