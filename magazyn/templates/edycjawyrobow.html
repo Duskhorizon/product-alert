@@ -52,84 +52,42 @@
   <body class="py-4">
     <div class="container">
 
-  <h1>Stan Magazynu:</h1>
+  <h1>Edycja Stanów Magazynowych</h1>
+
+<form method="GET" action="{% url 'magazyn' %}">
+    {% csrf_token %}
+    <input class="btn btn-primary" type ="submit" value="Magazyn" />
+</form>
+<hr/>
+<form method="GET" action="{% url 'addw' %}">
+    {% csrf_token %}
+    <input class="btn btn-primary" type ="submit" value="Dodaj Wyrób" />
+</form>
 
 <br/>
-{% if user.is_superuser %}
-<form method="GET" action="{% url 'edycjam' %}">
+<form method="POST" action="{% url 'edycjaw' %}">
+    {{formset.management_form }}
     {% csrf_token %}
-    <input class="btn btn-primary" type ="submit" value="Edytuj emaile do monitorowania!" />
-</form>
-{% endif %}
-
 
   
 
-  <h2 class="mt-4">Produkty:</h2>
+  <h2 class="mt-4">Wyroby:</h2>
 
-  <div class="row mb-0">
-    <div class="col-4 themed-grid-col2">Produkt</div>
-    <div class="col-4 themed-grid-col2">Stan</div>
-    <div class="col-4 themed-grid-col2">Minimum</div>
+
+{% for form in formset %}
+    {{ formset.management_form }}
+    <div class="row mb-1">
+    <div class="col-1 themed-grid-col2">{{ form }}</div>
   </div>
-
-{% for produkt in produkty.all %}
-    <div class="row mb-0">
-    <div class="col-4 themed-grid-col">{{ produkt.nazwa }}</div>
-    <div class="col-4 themed-grid-col">{{ produkt.ilosc }}</div>
-    <div class="col-4 themed-grid-col">{{ produkt.minimum }}</div>
-  </div>
-
+  {% if user.is_superuser %}
+  <button type="button" onclick="window.location.href='{% url 'deletew' form.id.value %}'">Kasuj</button>
+  {% endif %}
+<hr/>
 {% endfor %}
-<br/>
-<form method="GET" action="{% url 'edycjap' %}">
-    {% csrf_token %}
-    <input class="btn btn-primary" type ="submit" value="Edytuj produkty" />
-</form>    
-  
-    <h2 class="mt-4">Surowce:</h2>
-
-  <div class="row mb-0">
-    <div class="col-4 themed-grid-col2">Surowiec</div>
-    <div class="col-4 themed-grid-col2">Stan</div>
-    <div class="col-4 themed-grid-col2">Minimum</div>
-  </div>
-
-{% for surowiec in surowce.all %}
-    <div class="row mb-0">
-    <div class="col-4 themed-grid-col">{{ surowiec.nazwa }}</div>
-    <div class="col-4 themed-grid-col">{{ surowiec.ilosc }} kg</div>
-    <div class="col-4 themed-grid-col">{{ surowiec.minimum }} kg</div>
-  </div>
-
-
-{% endfor %}
-</br>
-<form method="GET" action="{% url 'edycjas' %}">
-    {% csrf_token %}
-    <input class="btn btn-primary" type ="submit" value="Edytuj surowce" />
+<input class="btn btn-primary" type ="submit" value="Zatwierdź" />
 </form>
 
-    <h2 class="mt-4">Wyroby:</h2>
 
-  <div class="row mb-0">
-    <div class="col-4 themed-grid-col2">Wyrób</div>
-    <div class="col-4 themed-grid-col2">Stan</div>
-  </div>
-
-{% for wyrob in wyroby.all %}
-    <div class="row mb-0">
-    <div class="col-4 themed-grid-col">{{ wyrob.nazwa }}</div>
-    <div class="col-4 themed-grid-col">{{ wyrob.ilosc }} szt.</div>
-  </div>
-
-
-{% endfor %}
-</br>
-<form method="GET" action="{% url 'edycjaw' %}">
-    {% csrf_token %}
-    <input class="btn btn-primary" type ="submit" value="Edytuj wyroby" />
-</form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

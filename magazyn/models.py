@@ -10,6 +10,10 @@ class Surowiec(models.Model):
     ilosc = models.FloatField()
     minimum = models.FloatField()
 
+class Wyrob(models.Model):
+    nazwa = models.CharField(max_length=200)
+    ilosc = models.IntegerField()  
+
 class Email(models.Model):
     name = models.CharField(max_length=200)
     class Meta:

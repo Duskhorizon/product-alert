@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Produkt, Surowiec, Email
+from .models import Produkt, Surowiec, Email, Wyrob
 from django.forms import formset_factory
 
 class ProduktForm(forms.ModelForm):
@@ -16,6 +16,14 @@ class SurowiecForm(forms.ModelForm):
     class Meta:
         model = Surowiec
         fields = ('nazwa', 'ilosc','minimum',)
+
+
+class WyrobForm(forms.ModelForm):
+    nazwa = forms.CharField()
+    ilosc = forms.IntegerField()
+    class Meta:
+        model = Wyrob
+        fields = ('nazwa','ilosc',)
 
 class EmailForm(forms.Form):
     name = forms.CharField(

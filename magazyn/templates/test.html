@@ -1,0 +1,4 @@
+<a href="javascript:{document.getElementById('upvote').submit()}"><button class ="btn btn-primary btn-lg btn-block"><span class="oi oi-thumb-up"></span> UPVOTE {{ product.votes_total}}</button></a>
+<form id="upvote" method="POST" action="{% url 'magazyn' %}">
+        {% csrf_token %}
+        <input type="hidden">

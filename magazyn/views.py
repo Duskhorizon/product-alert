@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
 
 from django.forms import modelformset_factory
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Produkt
 from .models import Surowiec
+from .models import Wyrob
 from .forms import ProduktForm, SurowiecForm
 from django.forms import ModelForm
 import yagmail
 from .forms import EmailFormset
 from .forms import EmailForm2
+from .forms import WyrobForm
 from .models import Email
 
 def magazyn(request):
     produkty = Produkt.objects
     surowce = Surowiec.objects
-    return render(request,'magazyn.html', {'produkty':produkty,'surowce':surowce})
+    wyroby = Wyrob.objects
+    return render(request,'magazyn.html', {'produkty':produkty,'surowce':surowce,'wyroby':wyroby,})
 
 
 def edycja(request):
@@ -50,7 +53,32 @@ def edycja_produktow(request):
         
     else:
         formset = ProduktFormSet()
-    return render(request, 'edycjaproduktow.html', {'formset': formset}) 
+    return render(request, 'edycjaproduktow.html', {'formset': formset})
+
+def edycja_wyrobow(request):
+    WyrobFormSet = modelformset_factory(Wyrob,fields=('nazwa','ilosc',), extra=0)
+    if request.method == 'POST':
+        formset = WyrobFormSet(request.POST or None, request.FILES or None)
+        if formset.is_valid():  
+            formset.save()
+    else:
+        formset = WyrobFormSet()
+    return render(request, 'edycjawyrobow.html', {'formset': formset})    
+
+def delete_wyrobow(request,wyrob_id):
+    wyrob = get_object_or_404(Wyrob, pk=wyrob_id)
+    wyrob.delete()
+    return redirect('edycjaw')
+
+def add_wyrob(request):
+    if request.method == "POST":
+        form = WyrobForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('edycjaw')
+    else:        
+        form = WyrobForm()
+    return render(request,'addwyrob.html',{'form':form})
 
 def edycja_surowcow(request):
     if request.user.is_superuser:
@@ -98,3 +126,6 @@ def emaile(request):
         'formset': formset,
         'emailformset': EmailFormSet2,
     })
+
+def test(request):
+    return render(request, 'test.html',)  
