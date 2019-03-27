@@ -60,7 +60,12 @@
     <input class="btn btn-primary" type ="submit" value="Magazyn" />
 
 </form>
-<br/>
+<hr/>
+
+<form method="GET" action="{% url 'addp' %}">
+    {% csrf_token %}
+    <input class="btn btn-primary" type ="submit" value="Dodaj Produkt" />
+</form>
 
 <form method="POST" action="{% url 'edycjap' %}">
     {{formset.management_form }}
@@ -75,11 +80,14 @@
 
 {% for form in formset %}
     {{ formset.management_form }}
-    <div class="row mb-4">
+    <div class="row mb-1">
     <div class="col-1 themed-grid-col2">{{ form }}</div>
 
   </div>
-
+  {% if user.is_superuser %}
+  <button type="button" onclick="window.location.href='{% url 'deletep' form.id.value %}'">Kasuj</button>
+  {% endif %}
+<hr/>
 {% endfor %}
 <input class="btn btn-primary" type ="submit" value="Zatwierdź" />
 </form>

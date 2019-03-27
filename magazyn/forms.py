@@ -17,6 +17,15 @@ class SurowiecForm(forms.ModelForm):
         model = Surowiec
         fields = ('nazwa', 'ilosc','minimum',)
 
+class NewSurowiecForm(forms.ModelForm):
+    class Meta:
+        model = Surowiec
+        fields = ('nazwa', 'ilosc','minimum',)
+
+class NewProduktForm(forms.ModelForm):
+    class Meta:
+        model = Produkt
+        fields = ('nazwa', 'ilosc','minimum',)
 
 class WyrobForm(forms.ModelForm):
     nazwa = forms.CharField()

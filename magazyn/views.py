@@ -5,13 +5,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Produkt
 from .models import Surowiec
 from .models import Wyrob
-from .forms import ProduktForm, SurowiecForm
 from django.forms import ModelForm
 import yagmail
-from .forms import EmailFormset
-from .forms import EmailForm2
-from .forms import WyrobForm
 from .models import Email
+from .forms import *
 
 def magazyn(request):
     produkty = Produkt.objects
@@ -104,7 +101,37 @@ def edycja_surowcow(request):
             
     else:
         formset = SurowiecFormSet()
-    return render(request, 'edycjasurowcow.html', {'formset': formset})    
+    return render(request, 'edycjasurowcow.html', {'formset': formset})
+
+def delete_surowcow(request,surowiec_id):
+    surowiec = get_object_or_404(Surowiec, pk=surowiec_id)
+    surowiec.delete()
+    return redirect('edycjas')
+
+def add_surowiec(request):
+    if request.method == "POST":
+        form = NewSurowiecForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('edycjas')
+    else:        
+        form = NewSurowiecForm()
+    return render(request,'addsurowiec.html',{'form':form})
+
+def delete_produktow(request,produkt_id):
+    produkt = get_object_or_404(Produkt, pk=produkt_id)
+    produkt.delete()
+    return redirect('edycjap')
+
+def add_produkt(request):
+    if request.method == "POST":
+        form = NewProduktForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('edycjap')
+    else:        
+        form = NewProduktForm()
+    return render(request,'addprodukt.html',{'form':form})
 
 def emaile(request):
     EmailFormSet2 = modelformset_factory(Email,form=EmailForm2,fields=('name',), extra=0)

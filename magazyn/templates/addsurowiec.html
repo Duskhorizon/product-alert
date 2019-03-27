@@ -52,45 +52,25 @@
   <body class="py-4">
     <div class="container">
 
-  <h1>Edycja Stanów Magazynowych</h1>
+  <h1>Dodawanie do magazynu</h1>
 
 <form method="GET" action="{% url 'magazyn' %}">
     {% csrf_token %}
     <input class="btn btn-primary" type ="submit" value="Magazyn" />
-
-</form>
-<hr/>
-
-<form method="GET" action="{% url 'adds' %}">
-    {% csrf_token %}
-    <input class="btn btn-primary" type ="submit" value="Dodaj Surowiec" />
 </form>
 
 
-<form method="POST" action="{% url 'edycjas' %}">
-    {{formset.management_form }}
-    {% csrf_token %}
-
-
-
-  
-
-  <h2 class="mt-4">Surowce:</h2>
-
-
-{% for form in formset %}
-    {{ formset.management_form }}
+<br/>
+<form method="POST" action="{% url 'adds' %}">
+{% csrf_token %}
+  <h2 class="mt-4">Dodaj surowiec:</h2>
     <div class="row mb-1">
     <div class="col-1 themed-grid-col2">{{ form }}</div>
-
   </div>
-  {% if user.is_superuser %}
-  <button type="button" onclick="window.location.href='{% url 'deletes' form.id.value %}'">Kasuj</button>
-  {% endif %}
 <hr/>
-{% endfor %}
-    <input class="btn btn-primary" type ="submit" value="Zatwierdź" />
+<input class="btn btn-primary" type ="submit" value="Dodaj!" />
 </form>
+
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

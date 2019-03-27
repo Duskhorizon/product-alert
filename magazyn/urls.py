@@ -10,5 +10,9 @@ urlpatterns = [
     path('edycjam/',views.emaile, name='edycjam'),
     path('deletew/<int:wyrob_id>',views.delete_wyrobow, name='deletew'),
     path('addw/',views.add_wyrob, name='addw'),
+    path('deletes/<int:surowiec_id>',views.delete_surowcow, name='deletes'),
+    path('adds/',views.add_surowiec, name='adds'),
+    path('deletep/<int:produkt_id>',views.delete_produktow, name='deletep'),
+    path('addp/',views.add_produkt, name='addp'),    
     path('test/',views.test,name='test'),
 ]
