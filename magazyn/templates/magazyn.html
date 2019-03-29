@@ -79,8 +79,13 @@
     <div class="col-4 themed-grid-col">{{ produkt.ilosc }}</div>
     <div class="col-4 themed-grid-col">{{ produkt.minimum }}</div>
   </div>
-
 {% endfor %}
+    <div class="row mb-0">
+<form method="POST" action="{% url 'matp' %}"> 
+    {% csrf_token %} 
+    <div class="col-12 themed-grid-col">{{ formp }}    <input class="btn btn-primary" type ="submit" value="wyślij" /></div>
+</form>
+  </div>
 <br/>
 <form method="GET" action="{% url 'edycjap' %}">
     {% csrf_token %}
@@ -104,6 +109,12 @@
 
 
 {% endfor %}
+    <div class="row mb-0">
+<form method="POST" action="{% url 'mats' %}"> 
+    {% csrf_token %} 
+    <div class="col-12 themed-grid-col">{{ forms }}    <input class="btn btn-primary" type ="submit" value="wyślij" /></div>
+</form>
+  </div>
 </br>
 <form method="GET" action="{% url 'edycjas' %}">
     {% csrf_token %}
@@ -122,9 +133,14 @@
     <div class="col-4 themed-grid-col">{{ wyrob.nazwa }}</div>
     <div class="col-4 themed-grid-col">{{ wyrob.ilosc }} szt.</div>
   </div>
-
-
 {% endfor %}
+    <div class="row mb-0">
+<form method="POST" action="{% url 'matw' %}"> 
+    {% csrf_token %} 
+    <div class="col-12 themed-grid-col">{{ formw }}    <input class="btn btn-primary" type ="submit" value="wyślij" /></div>
+</form>
+  </div>
+
 </br>
 <form method="GET" action="{% url 'edycjaw' %}">
     {% csrf_token %}

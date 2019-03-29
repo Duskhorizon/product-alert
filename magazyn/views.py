@@ -14,7 +14,10 @@ def magazyn(request):
     produkty = Produkt.objects
     surowce = Surowiec.objects
     wyroby = Wyrob.objects
-    return render(request,'magazyn.html', {'produkty':produkty,'surowce':surowce,'wyroby':wyroby,})
+    formp = MatForm()
+    forms = SurForm()
+    formw = WyrForm()           
+    return render(request,'magazyn.html', {'produkty':produkty,'surowce':surowce,'wyroby':wyroby,'formp':formp,'forms':forms,'formw':formw,})
 
 
 def edycja(request):
@@ -133,6 +136,9 @@ def add_produkt(request):
         form = NewProduktForm()
     return render(request,'addprodukt.html',{'form':form})
 
+
+
+
 def emaile(request):
     EmailFormSet2 = modelformset_factory(Email,form=EmailForm2,fields=('name',), extra=0)
     template_name = 'testowy.html'
@@ -153,6 +159,75 @@ def emaile(request):
         'formset': formset,
         'emailformset': EmailFormSet2,
     })
+
+def mat_produktow(request):
+    if request.method == 'POST':
+        pk = request.POST['co']
+        produkt = get_object_or_404(Produkt, pk=pk)
+        if request.POST['dzialanie'] == 'plus':
+            produkt.ilosc = produkt.ilosc + int(request.POST['ile'])
+        else:
+            produkt.ilosc = produkt.ilosc - int(request.POST['ile'])
+        if produkt.ilosc < 0:
+            produkt.ilosc = 0                         
+        produkt.save()
+        brakujace = 0
+        powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie o informacje o niewystarczających stanach magazynowych następujących produktów:\n "
+        for produkt in Produkt.objects.all():                
+            if produkt.ilosc < produkt.minimum:
+                    linijka = produkt.nazwa +' - obecna ilość: '+str(produkt.ilosc) + 'szt, określone minimum na poziomie : ' +str(produkt.minimum) + 'szt.\n'
+                    powitanie = powitanie + linijka
+                    brakujace = 1
+        if brakujace == 1:
+            to =[]
+            for email in Email.objects.all():
+                to.append(email.name)                           
+            yag = yagmail.SMTP('001010blipblop010101@gmail.com', 'siusiak666')
+            to = to
+            subject = 'Niewystarczające stany magazynowe!'
+            yag.send(to,subject,powitanie)
+    return redirect('magazyn')
+
+def mat_surowcow(request):
+    if request.method == 'POST':
+        pk = request.POST['co']
+        surowiec = get_object_or_404(Surowiec, pk=pk)
+        if request.POST['dzialanie'] == 'plus':
+            surowiec.ilosc = surowiec.ilosc + float(request.POST['ile'])
+        else:
+            surowiec.ilosc = surowiec.ilosc - float(request.POST['ile'])
+        if surowiec.ilosc < 0:
+            surowiec.ilosc = 0                     
+        surowiec.save()
+        brakujace = 0
+        powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie o informacje o niewystarczających stanach magazynowych następujących surowców:\n "
+        for surowiec in Surowiec.objects.all():                
+            if surowiec.ilosc < surowiec.minimum:
+                    linijka = surowiec.nazwa +' - obecna ilość: '+str(surowiec.ilosc) + 'kg, określone minimum na poziomie : ' +str(surowiec.minimum) + 'kg.\n'
+                    powitanie = powitanie + linijka
+                    brakujace = 1
+        if brakujace == 1:
+            to =[]
+            for email in Email.objects.all():
+                to.append(email.name)                           
+            yag = yagmail.SMTP('001010blipblop010101@gmail.com', 'siusiak666')
+            to = to
+            subject = 'Niewystarczające stany magazynowe!'
+            yag.send(to,subject,powitanie)
+    return redirect('magazyn')
+
+def mat_wyrobow(request):
+    if request.method == 'POST':
+        pk = request.POST['co']
+        wyrob = get_object_or_404(Wyrob, pk=pk)
+        if request.POST['dzialanie'] == 'plus':
+            wyrob.ilosc = wyrob.ilosc + int(request.POST['ile'])
+        else:
+            wyrob.ilosc = wyrob.ilosc - int(request.POST['ile'])
+        if wyrob.ilosc < 0:
+            wyrob.ilosc = 0                     
+        wyrob.save()
+    return redirect('magazyn') 
 
 def test(request):
     return render(request, 'test.html',)  

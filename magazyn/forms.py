@@ -27,6 +27,7 @@ class NewProduktForm(forms.ModelForm):
         model = Produkt
         fields = ('nazwa', 'ilosc','minimum',)
 
+
 class WyrobForm(forms.ModelForm):
     nazwa = forms.CharField()
     ilosc = forms.IntegerField()
@@ -48,4 +49,19 @@ class EmailForm2(forms.ModelForm):
         model = Email
         fields = ('name',)
     
-EmailFormset = formset_factory(EmailForm, extra=1)    
+EmailFormset = formset_factory(EmailForm, extra=1)   
+
+class MatForm(forms.Form):
+    co = forms.ModelChoiceField(queryset=Produkt.objects.all(),label='',)
+    dzialanie = forms.ChoiceField(label='działanie  ',choices=(('plus','+'),('minus','-')))
+    ile = forms.IntegerField(label='ile ')
+
+class SurForm(forms.Form):
+    co = forms.ModelChoiceField(queryset=Surowiec.objects.all(),label='',)
+    dzialanie = forms.ChoiceField(label='działanie  ',choices=(('plus','+'),('minus','-')))
+    ile = forms.FloatField(label='ile ')
+
+class WyrForm(forms.Form):
+    co = forms.ModelChoiceField(queryset=Wyrob.objects.all(),label='',)
+    dzialanie = forms.ChoiceField(label='działanie  ',choices=(('plus','+'),('minus','-')))
+    ile = forms.IntegerField(label='ile ')
