@@ -36,7 +36,7 @@ def edycja_produktow(request):
         if formset.is_valid():  
             formset.save()
             brakujace = 0
-            powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie o informacje o niewystarczających stanach magazynowych następujących produktów:\n "
+            powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie informacje o niewystarczających stanach magazynowych następujących produktów:\n "
             for produkt in Produkt.objects.all():                
                 if produkt.ilosc < produkt.minimum:
                     linijka = produkt.nazwa +' - obecna ilość: '+str(produkt.ilosc) + 'szt, określone minimum na poziomie : ' +str(produkt.minimum) + 'szt.\n'
@@ -90,7 +90,7 @@ def edycja_surowcow(request):
         if formset.is_valid():
             formset.save()
             brakujace = 0
-            powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie o informacje o niewystarczających stanach magazynowych następujących surowców:\n "
+            powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie informacje o niewystarczających stanach magazynowych następujących surowców:\n "
             for surowiec in Surowiec.objects.all():                
                 if surowiec.ilosc < surowiec.minimum:
                     linijka = surowiec.nazwa +' - obecna ilość: '+str(surowiec.ilosc) + 'kg, określone minimum na poziomie : ' +str(surowiec.minimum) + 'kg.\n'
@@ -166,19 +166,23 @@ def mat_produktow(request):
         produkt = get_object_or_404(Produkt, pk=pk)
         if request.POST['dzialanie'] == 'plus':
             produkt.ilosc = produkt.ilosc + int(request.POST['ile'])
+            dzialanie = '+'
         else:
             produkt.ilosc = produkt.ilosc - int(request.POST['ile'])
+            dzialanie = '-'
         if produkt.ilosc < 0:
             produkt.ilosc = 0                         
         produkt.save()
         brakujace = 0
-        powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie o informacje o niewystarczających stanach magazynowych następujących produktów:\n "
+        powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie informacje o niewystarczających stanach magazynowych następujących produktów:\n "
+        modyfikator = "\nPowyższa wiadomość została utworzona ze względu na modyfikacje produktu: %s (%s %s szt.) przez użytkownika %s" %(produkt.nazwa,dzialanie,request.POST['ile'],request.user)
         for produkt in Produkt.objects.all():                
             if produkt.ilosc < produkt.minimum:
                     linijka = produkt.nazwa +' - obecna ilość: '+str(produkt.ilosc) + 'szt, określone minimum na poziomie : ' +str(produkt.minimum) + 'szt.\n'
                     powitanie = powitanie + linijka
                     brakujace = 1
         if brakujace == 1:
+            powitanie = powitanie + modyfikator
             to =[]
             for email in Email.objects.all():
                 to.append(email.name)                           
@@ -194,19 +198,23 @@ def mat_surowcow(request):
         surowiec = get_object_or_404(Surowiec, pk=pk)
         if request.POST['dzialanie'] == 'plus':
             surowiec.ilosc = surowiec.ilosc + float(request.POST['ile'])
+            dzialanie = '+'
         else:
             surowiec.ilosc = surowiec.ilosc - float(request.POST['ile'])
+            dzialanie = '-'
         if surowiec.ilosc < 0:
             surowiec.ilosc = 0                     
         surowiec.save()
         brakujace = 0
-        powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie o informacje o niewystarczających stanach magazynowych następujących surowców:\n "
+        powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie informacje o niewystarczających stanach magazynowych następujących surowców:\n "
+        modyfikator = "\nPowyższa wiadomość została utworzona ze względu na modyfikacje surowca: %s (%s %s kg.) przez użytkownika %s" %(surowiec.nazwa,dzialanie,request.POST['ile'],request.user)                
         for surowiec in Surowiec.objects.all():                
             if surowiec.ilosc < surowiec.minimum:
                     linijka = surowiec.nazwa +' - obecna ilość: '+str(surowiec.ilosc) + 'kg, określone minimum na poziomie : ' +str(surowiec.minimum) + 'kg.\n'
                     powitanie = powitanie + linijka
                     brakujace = 1
         if brakujace == 1:
+            powitanie = powitanie + modyfikator
             to =[]
             for email in Email.objects.all():
                 to.append(email.name)                           
