@@ -5,10 +5,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Produkt
 from .models import Surowiec
 from .models import Wyrob
+from .models import Transakcja
 from django.forms import ModelForm
 import yagmail
 from .models import Email
 from .forms import *
+from django.utils import timezone
 
 def magazyn(request):
     produkty = Produkt.objects
@@ -18,6 +20,10 @@ def magazyn(request):
     forms = SurForm()
     formw = WyrForm()           
     return render(request,'magazyn.html', {'produkty':produkty,'surowce':surowce,'wyroby':wyroby,'formp':formp,'forms':forms,'formw':formw,})
+
+def transakcje(request):
+    transakcje = Transakcja.objects
+    return render(request,'transakcje.html',{'transakcje':transakcje})
 
 
 def edycja(request):
@@ -201,6 +207,12 @@ def mat_produktow(request):
             produkt.ilosc = 0                         
         produkt.save()
         brakujace = 0
+        transakcja = Transakcja()
+        transakcja.kto = request.user
+        transakcja.co = produkt.nazwa + ' (produkt)'
+        transakcja.ile = dzialanie + request.POST['ile'] + 'szt.'
+        transakcja.kiedy = timezone.datetime.now()
+        transakcja.save()
         powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie informacje o niewystarczających stanach magazynowych następujących produktów:\n "
         modyfikator = "\nPowyższa wiadomość została utworzona ze względu na modyfikacje produktu: %s (%s %s szt.) przez użytkownika %s" %(produkt.nazwa,dzialanie,request.POST['ile'],request.user)
         for produkt in Produkt.objects.all():                
@@ -233,6 +245,12 @@ def mat_surowcow(request):
             surowiec.ilosc = 0                     
         surowiec.save()
         brakujace = 0
+        transakcja = Transakcja()
+        transakcja.kto = request.user
+        transakcja.co = surowiec.nazwa + ' (surowiec)'
+        transakcja.ile = dzialanie + request.POST['ile'] + 'kg.'
+        transakcja.kiedy = timezone.datetime.now()
+        transakcja.save()        
         powitanie = "Dzień dobry, w skutek modyfikacji stanów magazynowych mam dla Ciebie informacje o niewystarczających stanach magazynowych następujących surowców:\n "
         modyfikator = "\nPowyższa wiadomość została utworzona ze względu na modyfikacje surowca: %s (%s %s kg.) przez użytkownika %s" %(surowiec.nazwa,dzialanie,request.POST['ile'],request.user)                
         for surowiec in Surowiec.objects.all():                
@@ -257,11 +275,19 @@ def mat_wyrobow(request):
         wyrob = get_object_or_404(Wyrob, pk=pk)
         if request.POST['dzialanie'] == 'plus':
             wyrob.ilosc = wyrob.ilosc + int(request.POST['ile'])
+            dzialanie = '+'
         else:
             wyrob.ilosc = wyrob.ilosc - int(request.POST['ile'])
+            dzialanie = '-'
         if wyrob.ilosc < 0:
             wyrob.ilosc = 0                     
         wyrob.save()
+        transakcja = Transakcja()
+        transakcja.kto = request.user
+        transakcja.co = wyrob.nazwa + ' (wyrób)'
+        transakcja.ile = dzialanie + request.POST['ile'] + 'kg.'
+        transakcja.kiedy = timezone.datetime.now()
+        transakcja.save()          
     return redirect('magazyn') 
 
 def test(request):

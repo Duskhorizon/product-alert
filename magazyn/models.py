@@ -32,4 +32,12 @@ class Email(models.Model):
     def __str__(self):
         return self.name
 
+class Transakcja(models.Model):
+    kto = models.CharField(max_length=200)
+    co = models.CharField(max_length=200)
+    ile = models.CharField(max_length=200)
+    kiedy = models.DateTimeField()
+    objects = models.Manager()
+
+
 

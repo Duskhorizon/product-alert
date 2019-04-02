@@ -20,5 +20,5 @@ urlpatterns = [
     path('matp/', views.mat_produktow, name='matp'),
     path('mats/', views.mat_surowcow, name='mats'),
     path('matw/', views.mat_wyrobow, name='matw'),
-
+    path('transakcje/', views.transakcje,name='transakcje'),
 ]

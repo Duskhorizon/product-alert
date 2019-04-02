@@ -61,7 +61,11 @@
     <input class="btn btn-primary" type ="submit" value="Edytuj emaile do monitorowania!" />
 </form>
 {% endif %}
-
+<br/>
+<form method="GET" action="{% url 'transakcje' %}">
+    {% csrf_token %}
+    <input class="btn btn-primary" type ="submit" value="Lista transakcji" />
+</form>
 
   
 
