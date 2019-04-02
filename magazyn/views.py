@@ -63,7 +63,19 @@ def edycja_wyrobow(request):
             formset.save()
     else:
         formset = WyrobFormSet()
-    return render(request, 'edycjawyrobow.html', {'formset': formset})    
+    return render(request, 'edycjawyrobow.html', {'formset': formset})
+
+def edycja_emaili(request):
+    EmailFormSet = modelformset_factory(Email,form=EmailForm2,fields=('name',), extra=0)
+    if request.method == 'POST':
+        formset = EmailFormSet(request.POST or None, request.FILES or None)
+        if formset.is_valid():  
+            formset.save()
+    else:
+        formset = EmailFormSet()
+    return render(request, 'edycjamaili.html', {'formset': formset})   
+
+
 
 def delete_wyrobow(request,wyrob_id):
     wyrob = get_object_or_404(Wyrob, pk=wyrob_id)
@@ -111,6 +123,11 @@ def delete_surowcow(request,surowiec_id):
     surowiec.delete()
     return redirect('edycjas')
 
+def delete_emaili(request,email_id):
+    email = get_object_or_404(Email, pk=email_id)
+    email.delete()
+    return redirect('edycjam')
+
 def add_surowiec(request):
     if request.method == "POST":
         form = NewSurowiecForm(request.POST)
@@ -120,6 +137,16 @@ def add_surowiec(request):
     else:        
         form = NewSurowiecForm()
     return render(request,'addsurowiec.html',{'form':form})
+
+def add_email(request):
+    if request.method == "POST":
+        form = EmailForm2(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('edycjam')
+    else:        
+        form = EmailForm2()
+    return render(request,'addemail.html',{'form':form})
 
 def delete_produktow(request,produkt_id):
     produkt = get_object_or_404(Produkt, pk=produkt_id)
