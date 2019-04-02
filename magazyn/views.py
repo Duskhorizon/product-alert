@@ -285,7 +285,7 @@ def mat_wyrobow(request):
         transakcja = Transakcja()
         transakcja.kto = request.user
         transakcja.co = wyrob.nazwa + ' (wyrób)'
-        transakcja.ile = dzialanie + request.POST['ile'] + 'kg.'
+        transakcja.ile = dzialanie + request.POST['ile'] + 'szt.'
         transakcja.kiedy = timezone.datetime.now()
         transakcja.save()          
     return redirect('magazyn') 
