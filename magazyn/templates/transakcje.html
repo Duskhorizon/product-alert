@@ -76,7 +76,7 @@
     <div class="col-3 themed-grid-col2">Kiedy</div>
   </div>
 
-{% for transakcja in transakcje.all %}
+{% for transakcja in transakcje.all reversed %}
     <div class="row mb-0">
     <div class="col-3 themed-grid-col">{{ transakcja.kto }}</div>
     <div class="col-3 themed-grid-col">{{ transakcja.co }}</div>
