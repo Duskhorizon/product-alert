@@ -40,6 +40,12 @@
     background-color: rgba(26, 61, 124, .15);
     border: 1px solid rgba(26, 61, 124, .2);
     }
+            .themed-grid-col3 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background: rgba(200, 44, 44, 0.6);
+    border: 1px solid rgba(26, 61, 124, .2);
+    }
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -82,7 +88,12 @@
 {% for produkt in produkty.all %}
     <div class="row mb-0">
     <div class="col-4 themed-grid-col">{{ produkt.nazwa }}</div>
+    {% if produkt.ilosc < produkt.minimum %}
+    <div class="col-4 themed-grid-col3">{{ produkt.ilosc }}</div>
+    {% endif %}
+    {% if produkt.ilosc >= produkt.minimum %}
     <div class="col-4 themed-grid-col">{{ produkt.ilosc }}</div>
+    {% endif %}
     <div class="col-4 themed-grid-col">{{ produkt.minimum }}</div>
   </div>
 {% endfor %}
