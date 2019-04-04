@@ -121,7 +121,12 @@
 {% for surowiec in surowce.all %}
     <div class="row mb-0">
     <div class="col-4 themed-grid-col">{{ surowiec.nazwa }}</div>
-    <div class="col-4 themed-grid-col">{{ surowiec.ilosc }} kg</div>
+    {% if surowiec.ilosc < surowiec.minimum %}
+    <div class="col-4 themed-grid-col3">{{ surowiec.ilosc }}</div>
+    {% endif %}
+    {% if surowiec.ilosc >= surowiec.minimum %}
+    <div class="col-4 themed-grid-col">{{ surowiec.ilosc }}</div>
+    {% endif %}
     <div class="col-4 themed-grid-col">{{ surowiec.minimum }} kg</div>
   </div>
 
