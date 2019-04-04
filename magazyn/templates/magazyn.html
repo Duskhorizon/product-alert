@@ -62,9 +62,11 @@
 </form>
 {% endif %}
 <br/>
+{% if user.is_superuser %}
 <form method="GET" action="{% url 'transakcje' %}">
     {% csrf_token %}
     <input class="btn btn-primary" type ="submit" value="Lista transakcji" />
+{% endif %}
 </form>
 
   
