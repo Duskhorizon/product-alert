@@ -1,6 +1,8 @@
 from django.db import models
 
 class Produkt(models.Model):
+    class Meta:
+        ordering = ['nazwa']    
     nazwa = models.CharField(max_length=200)
     ilosc = models.IntegerField()
     minimum = models.IntegerField()
@@ -9,6 +11,8 @@ class Produkt(models.Model):
         return self.nazwa 
 
 class Surowiec(models.Model):
+    class Meta:
+        ordering = ['nazwa']        
     nazwa = models.CharField(max_length=200)
     ilosc = models.FloatField()
     minimum = models.FloatField()
@@ -17,6 +21,8 @@ class Surowiec(models.Model):
         return self.nazwa  
 
 class Wyrob(models.Model):
+    class Meta:
+        ordering = ['nazwa']        
     nazwa = models.CharField(max_length=200)
     ilosc = models.IntegerField()
     objects = models.Manager()   
