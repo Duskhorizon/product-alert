@@ -11,7 +11,9 @@ import yagmail
 from .models import Email
 from .forms import *
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def magazyn(request):
     produkty = Produkt.objects
     surowce = Surowiec.objects
@@ -21,17 +23,18 @@ def magazyn(request):
     formw = WyrForm()           
     return render(request,'magazyn.html', {'produkty':produkty,'surowce':surowce,'wyroby':wyroby,'formp':formp,'forms':forms,'formw':formw,})
 
+@login_required
 def transakcje(request):
     transakcje = Transakcja.objects
     return render(request,'transakcje.html',{'transakcje':transakcje})
 
-
+@login_required
 def edycja(request):
     produkty = Produkt.objects
     surowce = Surowiec.objects
     return render(request,'edycja.html', {'produkty':produkty,'surowce':surowce})
 
-
+@login_required
 def edycja_produktow(request):
     if request.user.is_superuser:
         ProduktFormSet = modelformset_factory(Produkt,fields=('nazwa','ilosc','minimum',), extra=0)
@@ -61,6 +64,7 @@ def edycja_produktow(request):
         formset = ProduktFormSet()
     return render(request, 'edycjaproduktow.html', {'formset': formset})
 
+@login_required
 def edycja_wyrobow(request):
     WyrobFormSet = modelformset_factory(Wyrob,fields=('nazwa','ilosc',), extra=0)
     if request.method == 'POST':
@@ -71,6 +75,7 @@ def edycja_wyrobow(request):
         formset = WyrobFormSet()
     return render(request, 'edycjawyrobow.html', {'formset': formset})
 
+@login_required
 def edycja_emaili(request):
     EmailFormSet = modelformset_factory(Email,form=EmailForm2,fields=('name',), extra=0)
     if request.method == 'POST':
@@ -82,12 +87,13 @@ def edycja_emaili(request):
     return render(request, 'edycjamaili.html', {'formset': formset})   
 
 
-
+@login_required
 def delete_wyrobow(request,wyrob_id):
     wyrob = get_object_or_404(Wyrob, pk=wyrob_id)
     wyrob.delete()
     return redirect('edycjaw')
 
+@login_required
 def add_wyrob(request):
     if request.method == "POST":
         form = WyrobForm(request.POST)
@@ -98,6 +104,7 @@ def add_wyrob(request):
         form = WyrobForm()
     return render(request,'addwyrob.html',{'form':form})
 
+@login_required
 def edycja_surowcow(request):
     if request.user.is_superuser:
         SurowiecFormSet = modelformset_factory(Surowiec,fields=('nazwa','ilosc','minimum',), extra=0)
@@ -124,16 +131,19 @@ def edycja_surowcow(request):
         formset = SurowiecFormSet()
     return render(request, 'edycjasurowcow.html', {'formset': formset})
 
+@login_required
 def delete_surowcow(request,surowiec_id):
     surowiec = get_object_or_404(Surowiec, pk=surowiec_id)
     surowiec.delete()
     return redirect('edycjas')
 
+@login_required
 def delete_emaili(request,email_id):
     email = get_object_or_404(Email, pk=email_id)
     email.delete()
     return redirect('edycjam')
 
+@login_required
 def add_surowiec(request):
     if request.method == "POST":
         form = NewSurowiecForm(request.POST)
@@ -144,6 +154,7 @@ def add_surowiec(request):
         form = NewSurowiecForm()
     return render(request,'addsurowiec.html',{'form':form})
 
+@login_required
 def add_email(request):
     if request.method == "POST":
         form = EmailForm2(request.POST)
@@ -154,11 +165,13 @@ def add_email(request):
         form = EmailForm2()
     return render(request,'addemail.html',{'form':form})
 
+@login_required
 def delete_produktow(request,produkt_id):
     produkt = get_object_or_404(Produkt, pk=produkt_id)
     produkt.delete()
     return redirect('edycjap')
 
+@login_required
 def add_produkt(request):
     if request.method == "POST":
         form = NewProduktForm(request.POST)
@@ -171,7 +184,7 @@ def add_produkt(request):
 
 
 
-
+@login_required
 def emaile(request):
     EmailFormSet2 = modelformset_factory(Email,form=EmailForm2,fields=('name',), extra=0)
     template_name = 'testowy.html'
@@ -193,6 +206,7 @@ def emaile(request):
         'emailformset': EmailFormSet2,
     })
 
+@login_required
 def mat_produktow(request):
     if request.method == 'POST':
         pk = request.POST['co']
@@ -231,6 +245,7 @@ def mat_produktow(request):
             yag.send(to,subject,powitanie)
     return redirect('magazyn')
 
+@login_required
 def mat_surowcow(request):
     if request.method == 'POST':
         pk = request.POST['co']
@@ -269,6 +284,7 @@ def mat_surowcow(request):
             yag.send(to,subject,powitanie)
     return redirect('magazyn')
 
+@login_required
 def mat_wyrobow(request):
     if request.method == 'POST':
         pk = request.POST['co']
@@ -288,7 +304,8 @@ def mat_wyrobow(request):
         transakcja.ile = dzialanie + request.POST['ile'] + 'szt.'
         transakcja.kiedy = timezone.datetime.now()
         transakcja.save()          
-    return redirect('magazyn') 
+    return redirect('magazyn')
 
+@login_required
 def test(request):
     return render(request, 'test.html',)  
